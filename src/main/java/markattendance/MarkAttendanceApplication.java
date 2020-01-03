@@ -1,0 +1,13 @@
+package markattendance;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class MarkAttendanceApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(MarkAttendanceApplication.class, args);
+	}
+
+}
