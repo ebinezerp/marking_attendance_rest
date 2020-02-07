@@ -10,20 +10,23 @@ import javax.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class Student {
+@NoArgsConstructor
+public class Employee {
+
 	@Id
-	private String studentId;
-	@Column(name = "name", nullable = false)
-	private String name;
-	@Column(name = "email", nullable = false, unique = true)
-	private String email;
-	@Column(name = "password", nullable = false)
-	private String password;
+	private String empCode;
 	@Column(nullable = false)
-	private Boolean appinstalled;
+	private String centerCode;
+	@Column(nullable = false)
+	private String password;
+	
+	private String role;
+	@OneToMany(mappedBy = "employee")
+	private List<Batch> batches;
+
 }
