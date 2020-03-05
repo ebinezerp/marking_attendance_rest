@@ -23,4 +23,14 @@ public class BatchService {
 			return null;
 		}
 	}
+
+	public Batch getBatch(String batchCode) {
+		try {
+			return batchRepository.getOne(batchCode);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 }

@@ -25,7 +25,7 @@ public class LoginController {
 	private EmployeeService employeeService;
 
 	@PostMapping("/login/std")
-	private ResponseEntity<Boolean> login(@RequestParam("student_id") String studentId,
+	private ResponseEntity<Boolean> login(@RequestParam("studentId") String studentId,
 			@RequestParam("password") String password) {
 		return new ResponseEntity<Boolean>(studentService.login(studentId, password), HttpStatus.OK);
 	}
