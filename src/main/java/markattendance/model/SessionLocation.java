@@ -1,44 +1,34 @@
 package markattendance.model;
 
-import java.util.Date;
+import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.ToString.Exclude;
 
 @Entity
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class BatchSession {
+@NoArgsConstructor
+public class SessionLocation {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	private String sessionId;
-	private Date startTime;
-	private Date endTime;
-
-	private boolean triggerd;
-	private String attendanceCode;
-
-	@ManyToOne
-	@ToString.Exclude
+	private double longitude;
+	private double latitude;
+	@OneToMany(mappedBy = "sessionLocation")
 	@JsonIgnore
-	private Batch batch;
-	
-	@ManyToOne
-	@ToString.Exclude
-	private SessionLocation sessionLocation;
+	@Exclude
+	private List<BatchSession> batchSessions;
 
 }

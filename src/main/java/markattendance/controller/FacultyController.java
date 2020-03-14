@@ -17,9 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 import markattendance.model.Batch;
 import markattendance.model.BatchSession;
 import markattendance.model.Employee;
+import markattendance.model.SessionLocation;
+import markattendance.repository.SessionLocationRepository;
 import markattendance.service.BatchService;
 import markattendance.service.BatchSessionService;
 import markattendance.service.EmployeeService;
+import markattendance.service.SessionLocationService;
 
 @RestController
 @RequestMapping("/faculty")
@@ -33,6 +36,8 @@ public class FacultyController {
 	private BatchService batchService;
 	@Autowired
 	private BatchSessionService batchSessionService;
+	@Autowired
+	private SessionLocationService sessionLocationService;
 
 	@GetMapping("/{empCode}/batches")
 	public ResponseEntity<List<Batch>> getBatches(@PathVariable("empCode") String empCode) {
@@ -50,13 +55,21 @@ public class FacultyController {
 	public ResponseEntity<Boolean> activate(@RequestBody List<BatchSession> batchSessions,
 			@RequestParam("batchCode") String batchCode) {
 		Batch batch = batchService.getBatch(batchCode);
-		for (BatchSession batchSession : batchSessions) {
-			batchSession.setBatch(batch);
-			batchSession.setTriggerd(true);
-		}
 
-		if (batchSessionService.update(batchSessions)) {
-			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+		System.out.println(batchSessions.get(0).getSessionLocation());
+		SessionLocation sessionLocation = batchSessions.get(0).getSessionLocation();
+		if (sessionLocationService.save(sessionLocation)) {
+			for (BatchSession batchSession : batchSessions) {
+				batchSession.setBatch(batch);
+				batchSession.setTriggerd(true);
+				batchSession.setSessionLocation(sessionLocation);
+			}
+
+			if (batchSessionService.update(batchSessions)) {
+				return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+			} else {
+				return new ResponseEntity<Boolean>(HttpStatus.INTERNAL_SERVER_ERROR);
+			}
 		} else {
 			return new ResponseEntity<Boolean>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}

@@ -23,6 +23,7 @@ public class BatchService {
 			return null;
 		}
 	}
+	
 
 	public Batch getBatch(String batchCode) {
 		try {
